@@ -1,0 +1,28 @@
+name: CI
+on: push
+
+permissions: {}
+
+jobs:
+
+  test:
+
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Create test file
+        run: touch test
+
+      - name: Hash test file
+        id: hash
+        uses: fionn/action-hash@master
+        with:
+          path: test
+
+      - name: Compare SHA256 of test file
+        run: echo "$HASH  test" | sha256sum -c -
+        shell: bash
+        env:
+          HASH: ${{ steps.hash.outputs.sha256 }}

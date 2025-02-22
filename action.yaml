@@ -1,0 +1,28 @@
+name: Hash Files Action
+description: Calculate SHA256 hash of a given file
+
+inputs:
+
+  path:
+    description: Path of file to hash
+    required: true
+
+outputs:
+
+  sha256:
+    description: SHA256 of the input file in hexadecimal
+    value: ${{ steps.sha256.outputs.hex }}
+
+runs:
+
+  using: composite
+  steps:
+
+    - name: Calculate SHA256
+      id: sha256
+      run: echo "hex=$(sha256sum ${{ inputs.path }} | cut -d " " -f 1)" >> $GITHUB_OUTPUT
+      shell: bash
+
+branding:
+  color: purple
+  icon: hash
